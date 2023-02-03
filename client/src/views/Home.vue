@@ -1,3 +1,24 @@
+<script>
+import { useCounterStore } from "../stores/counter";
+import { mapActions, mapState } from "pinia";
+import TableRowItem from "../components/TableRowItem.vue";
+export default {
+  name: "Home",
+  components: {
+    TableRowItem,
+  },
+  methods: {
+    ...mapActions(useCounterStore, ["getAllItems"]),
+  },
+  computed: {
+    ...mapState(useCounterStore, ["items"]),
+  },
+  created() {
+    this.getAllItems();
+  },
+};
+</script>
+
 <template>
   <div class="ml-[200px]">
     <div class="flex flex-col">
@@ -34,78 +55,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
-                >
-                  <td
-                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                  >
-                    1
-                  </td>
-                  <td
-                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                  >
-                    Mark
-                  </td>
-                  <td
-                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                  >
-                    Otto
-                  </td>
-                  <td
-                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                  >
-                    @mdo
-                  </td>
-                </tr>
-                <tr
-                  class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
-                >
-                  <td
-                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                  >
-                    2
-                  </td>
-                  <td
-                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                  >
-                    Jacob
-                  </td>
-                  <td
-                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                  >
-                    Thornton
-                  </td>
-                  <td
-                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                  >
-                    @fat
-                  </td>
-                </tr>
-                <tr
-                  class="bg-white border-b transition duration-300 ease-in-out hover:bg-gray-100"
-                >
-                  <td
-                    class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
-                  >
-                    3
-                  </td>
-                  <td
-                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                  >
-                    Larry
-                  </td>
-                  <td
-                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                  >
-                    Wild
-                  </td>
-                  <td
-                    class="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap"
-                  >
-                    @twitter
-                  </td>
-                </tr>
+                <TableRowItem v-for="el in items" :item="el" />
               </tbody>
             </table>
           </div>
@@ -114,5 +64,3 @@
     </div>
   </div>
 </template>
-
-<script></script>

@@ -1,4 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -6,10 +8,23 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { Avatar, Card, IconButton } from "react-native-paper";
+
+const BASE_URL = "https://production-test.foxhub.space";
+
 export default function Home() {
   const navigation = useNavigation();
+  const [items, setItem] = useState([]);
+
+  useEffect(() => {
+    axios.get(BASE_URL).then((response) => {
+      setItem(response.data);
+    });
+  }, []);
+
+  console.log(items);
   return (
     <ScrollView>
       <View style={styles.circle}></View>
@@ -82,9 +97,27 @@ export default function Home() {
         >
           OUR LATEST PRODUCT
         </Text>
-        <Card onPress={() => navigation.navigate("AddPage")}>
-          <Card.Cover source={{ uri: "https://picsum.photos/700" }} />
-        </Card>
+        {items.map((el) => {
+          return (
+            <View>
+              <Card key={el.id} style={{ marginBottom: 10 }}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("DetailPage", { id: el.id });
+                  }}
+                >
+                  <Card.Content>
+                    <Image
+                      source={{ uri: el.imgUrl }}
+                      style={{ width: 50, height: 50, marginTop: 10 }}
+                    ></Image>
+                  </Card.Content>
+                  <Card.Title title={el.name} subtitle={"Rp " + el.price} />
+                </TouchableOpacity>
+              </Card>
+            </View>
+          );
+        })}
       </View>
     </ScrollView>
   );

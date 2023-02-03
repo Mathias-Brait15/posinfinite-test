@@ -1,6 +1,12 @@
 <script>
 export default {
   name: "Sidebar",
+  methods: {
+    handleLogout() {
+      localStorage.clear();
+      this.$router.push({ name: "login" });
+    },
+  },
 };
 </script>
 
@@ -56,7 +62,7 @@ export default {
           class="flex items-center gap-3 mt-4 mb-4 hover:bg-white hover:text-[#2D9CDB] p-2 rounded-md w-[160px] h-[50 px]"
         >
           <i class="material-icons">&#xe8b8;</i>
-          <a href="" @click.prevent="$router.push('/register')">Logout</a>
+          <a href="" @click.prevent="handleLogout">Logout</a>
         </li>
       </ul>
     </div>
