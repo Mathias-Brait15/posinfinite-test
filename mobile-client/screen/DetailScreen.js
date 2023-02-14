@@ -13,9 +13,9 @@ import axios from "axios";
 import { Button } from "react-native-paper";
 export default function DetailScreen({ route }) {
   const { id } = route.params;
-  const BASE_URL = "https://production-test.foxhub.space";
+  const BASE_URL =
+    "https://f1f5-2001-448a-2061-95aa-95c5-84d4-da40-9615.ap.ngrok.io";
   const [item, setItem] = useState({});
-  const [quantity, setQuantity] = useState("");
 
   useEffect(() => {
     axios.get(`${BASE_URL}/${id}`).then((response) => {
@@ -23,20 +23,23 @@ export default function DetailScreen({ route }) {
     });
   }, []);
 
-  async function addCheckout(input, id) {
+  const [quantity, setQuantity] = useState("");
+  async function addCheckout(qty, id) {
+    const access_token = await AsyncStorage.getItem("access_token");
+    console.log(access_token, "<=================================");
     try {
       const { data } = await axios({
         method: "POST",
         url: `${BASE_URL}/${id}`,
-        data: { input },
         headers: {
-          access_token:
-            "eyJhbGciOiJIUzI1NiJ9.MQ.gwfNEkLoqjkkkav_Jggol4Pc3Fn3OHJic7veDMEOo-Q",
+          access_token: access_token,
+        },
+        data: {
+          quantity: qty,
         },
       });
-      console.log(data);
     } catch (error) {
-      console.log(error);
+      console.log(error, "<<===");
     }
   }
 

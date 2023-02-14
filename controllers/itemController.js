@@ -45,8 +45,7 @@ class ItemController {
 
   static async addItem(req, res, next) {
     try {
-      const { name, description, price, sku, stock, CategoryId } =
-        req.body;
+      const { name, description, price, sku, stock, CategoryId } = req.body;
 
       if (!name) {
         throw { name: "Name is required" };
@@ -75,8 +74,11 @@ class ItemController {
   static async checkoutItem(req, res, next) {
     try {
       const { id } = req.params;
-      const { quantity } = req.body;
+      const quantity = +req.body.quantity;
       const item = await Item.findByPk(id);
+
+      console.log(quantity);
+      console.log(id);
 
       const userId = req.user.id;
 

@@ -22,12 +22,12 @@ const upload = multer({ storage: storage });
 
 router.post("/register", UserController.Register);
 router.post("/login", UserController.Login);
-
 router.get("/", ItemController.getAllItem);
 router.get("/newItem", ItemController.getItemNews);
 router.get("/category", ItemController.getAllCategory);
 router.post("/", upload.single("imgUrl"), ItemController.addItem);
 router.get("/invoice", Authentication, ItemController.getInvoice);
+router.get("/user", Authentication, UserController.getDataUser);
 router.get("/:id", ItemController.getItemById);
 router.post("/:id", Authentication, ItemController.checkoutItem);
 module.exports = router;

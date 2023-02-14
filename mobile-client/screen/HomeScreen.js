@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -12,11 +13,29 @@ import {
 } from "react-native";
 import { Avatar, Card, IconButton } from "react-native-paper";
 
-const BASE_URL = "https://production-test.foxhub.space";
+const BASE_URL =
+  "https://f1f5-2001-448a-2061-95aa-95c5-84d4-da40-9615.ap.ngrok.io";
 
 export default function Home() {
   const navigation = useNavigation();
   const [items, setItem] = useState([]);
+  const [user_balance, setUserBalance] = useState("");
+
+  const getUserData = async () => {
+    const { data } = await axios({
+      method: "GET",
+      url: `${BASE_URL}/user`,
+      headers: {
+        access_token: await AsyncStorage.getItem("access_token"),
+      },
+    });
+    console.log(data);
+    setUserBalance(data.user_balance);
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   useEffect(() => {
     axios.get(BASE_URL).then((response) => {
@@ -24,15 +43,30 @@ export default function Home() {
     });
   }, []);
 
-  console.log(items);
   return (
     <ScrollView>
       <View style={styles.circle}></View>
 
       <View style={styles.rectangle}>
-        <View label="justifyContent" values={"flex-end"}>
-          <Text>Your Balance</Text>
-          <Text>$ 200.000 </Text>
+        <View style={{ marginLeft: 180, marginTop: 80 }}>
+          <Text
+            style={{
+              color: "#535353",
+              fontSize: 15,
+              marginLeft: 20,
+            }}
+          >
+            Your Balance
+          </Text>
+          <Text
+            style={{
+              color: "#0099EE",
+              fontSize: 22,
+              fontWeight: "bold",
+            }}
+          >
+            Rp. {user_balance}
+          </Text>
         </View>
       </View>
 
@@ -137,7 +171,7 @@ const styles = StyleSheet.create({
   rectangle: {
     width: 160 * 2,
     height: 140,
-    marginLeft: 35,
+    marginLeft: 39,
     marginTop: 120,
     backgroundColor: "#CCEDFF",
     borderRadius: 15,

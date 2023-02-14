@@ -2,8 +2,10 @@ import axios from "axios";
 import { defineStore } from "pinia";
 import swal from "sweetalert";
 
-const BASE_URL = "https://production-test.foxhub.space";
+// const BASE_URL = "https://production-test.foxhub.space";
 // const BASE_URL = "http://localhost:4002";
+const BASE_URL =
+  "https://f1f5-2001-448a-2061-95aa-95c5-84d4-da40-9615.ap.ngrok.io";
 
 export const useCounterStore = defineStore("counter", {
   state: () => ({
@@ -56,6 +58,9 @@ export const useCounterStore = defineStore("counter", {
         let { data } = await axios({
           method: "GET",
           url: `${BASE_URL}`,
+          headers: {
+            "ngrok-skip-browser-warning": true,
+          },
         });
         this.items = data;
       } catch (error) {
@@ -67,6 +72,9 @@ export const useCounterStore = defineStore("counter", {
         let { data } = await axios({
           method: "GET",
           url: `${BASE_URL}/category`,
+          headers: {
+            "ngrok-skip-browser-warning": true,
+          },
         });
         this.categories = data;
       } catch (error) {
@@ -89,6 +97,9 @@ export const useCounterStore = defineStore("counter", {
           url: `${BASE_URL}`,
           method: "post",
           data: multerData,
+          headers: {
+            "ngrok-skip-browser-warning": true,
+          },
         });
         swal("Good job!", "Welcome", "success");
         this.router.push("/home");

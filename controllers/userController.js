@@ -53,8 +53,19 @@ class UserController {
           name: user.name,
           email,
           access_token,
+          user_balance: user.user_balance,
         });
       }
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async getDataUser(req, res, next) {
+    try {
+      const { id } = req.user;
+      let user = await User.findByPk(id);
+      res.status(200).json(user);
     } catch (error) {
       next(error);
     }
